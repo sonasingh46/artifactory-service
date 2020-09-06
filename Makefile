@@ -59,7 +59,7 @@ test:
 
 .PHONY: artifactory-service.amd64
 artifactory-service.amd64 :
-	@echo -n "--> Building image store service image <--"
+	@echo -n "--> Building artifactory service image <--"
 	@echo "${IMAGE_ORG}/${ART_SERVICE_REPO_NAME}:${IMAGE_TAG}"
 	@echo "----------------------------"
 	@PNAME=${ART_SERVICE} CTLNAME=${ART_SERVICE} sh -c "'$(PWD)/build/build.sh'"

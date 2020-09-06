@@ -1,0 +1,42 @@
+name: Docker
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install Docker
+        run: |
+          sudo apt-get install \
+              apt-transport-https \
+              ca-certificates \
+              curl \
+              gnupg-agent \
+              software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository \
+             "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+             $(lsb_release -cs) \
+             stable"
+          sudo apt-get update
+          sudo apt-get install docker-ce docker-ce-cli containerd.io
+          docker --version
+
+      - name: Log into registry
+        run: echo "${{ secrets.REPO_SECRET }}" | docker login -u ${{ secrets.REPO_USER }} --password-stdin
+
+      - name: Make image
+        run: make artifactory-service.amd64 IMAGE_ORG=sonasingh46 IMAGE_TAG=$GITHUB_SHA
+      - name: List image
+        run: docker images
+
+      - name: Push image
+        run: docker push sonasingh46/artifactory-service-amd64:$GITHUB_SHA
