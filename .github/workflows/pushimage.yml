@@ -35,8 +35,6 @@ jobs:
 
       - name: Make image
         run: make artifactory-service.amd64 IMAGE_ORG=sonasingh46 IMAGE_TAG=$GITHUB_SHA
-      - name: List image
-        run: docker images
 
       - name: Push image
         run: docker push sonasingh46/artifactory-service-amd64:$GITHUB_SHA
