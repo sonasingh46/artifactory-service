@@ -20,7 +20,7 @@ func StartService() {
 	r.HandleFunc("/healthz", HealthCheckHandler).Methods("GET")
 
 	// Endpoint for listing all the albums.
-	r.HandleFunc("/getTopDownloaded", getTopDownloaded).Methods("GET")
+	r.HandleFunc("/getLeastDownloaded", getLeastDownloaded).Methods("GET")
 	log.Println("Setting up Jfrog Artifact client...")
 	err := client.SetArtifactoryClient()
 	if err != nil {
@@ -38,10 +38,10 @@ func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, `{"alive": true}`)
 }
 
-// getTopDownloaded returns the top 2 downloaded artifactory
+// getLeastDownloaded returns the least 2 downloaded artifactory
 // Note : The AQL for fetching the result is hardcoded and can be improved
 // More info here : pkg/aql/aql.go
-func getTopDownloaded(w http.ResponseWriter, r *http.Request) {
+func getLeastDownloaded(w http.ResponseWriter, r *http.Request) {
 	topDownloaded, err := client.GetArtifactoryClient().GetTopDownloaded()
 	if err != nil {
 		log.Print("failed to get top downloaded artifacts", err.Error())
