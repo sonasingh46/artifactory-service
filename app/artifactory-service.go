@@ -42,7 +42,7 @@ func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
 // Note : The AQL for fetching the result is hardcoded and can be improved
 // More info here : pkg/aql/aql.go
 func getLeastDownloaded(w http.ResponseWriter, r *http.Request) {
-	topDownloaded, err := client.GetArtifactoryClient().GetTopDownloaded()
+	topDownloaded, err := client.GetArtifactoryClient().GetLeastDownloaded()
 	if err != nil {
 		log.Print("failed to get top downloaded artifacts", err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
