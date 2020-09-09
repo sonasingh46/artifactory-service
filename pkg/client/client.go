@@ -15,13 +15,13 @@ import (
 // Artifactory interface abstracts the operations on artifacts API
 // The artifactory clients should implement the methods.
 type Artifactory interface {
-	GetTopDownloaded() (*types.Artifacts, error)
+	GetLeastDownloaded() (*types.Artifacts, error)
 }
 
-// GetTopDownloaded returns top 2 doownloaded artifacts based on AQL.
+// GetLeastDownloaded returns top 2 least doownloaded artifacts based on AQL.
 // Note : For more info : pkg/aql/aql.go
 // Here ArtifactoryClient is the Jfrog artifactory client implementation.
-func (ac *ArtifactoryClient) GetTopDownloaded() (*types.Artifacts, error) {
+func (ac *ArtifactoryClient) GetLeastDownloaded() (*types.Artifacts, error) {
 	payload := strings.NewReader(aql.PayLoad)
 	newReq, err := http.NewRequest("POST",
 		ac.buildURL("artifactory/api/search/aql"),
